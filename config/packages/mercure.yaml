@@ -1,0 +1,8 @@
+mercure:
+    # URL del hub Mercure (interna para publicación)
+    hubs:
+        default:
+            url: '%env(MERCURE_URL)%'
+            public_url: '%env(MERCURE_PUBLIC_URL)%'
+            # Secret para firmar los JWT de Mercure
+            secret: '!ChangeThisMercureHubJWTSecretKey!'

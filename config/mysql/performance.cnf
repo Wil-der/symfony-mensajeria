@@ -1,0 +1,21 @@
+[mysqld]
+# Optimizaciones de rendimiento para VPS con 4GB RAM
+innodb_buffer_pool_size = 512M
+innodb_flush_log_at_trx_commit = 2
+max_connections = 150
+
+# Configuración adicional
+innodb_log_file_size = 64M
+innodb_flush_method = O_DIRECT
+table_open_cache = 4000
+thread_cache_size = 50
+query_cache_type = 0
+
+# Character set
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+# Slow query log (opcional para debugging)
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
