@@ -1,0 +1,49 @@
+framework:
+    messenger:
+        # Transports definidos
+        transports:
+            # Cola asíncrona principal (Redis)
+            async:
+                dsn: '%env(REDIS_URL)%'
+                options:
+                    queue: 'mensajeria_async'
+                    auto_setup: false
+            
+            # Cola de fallos (Doctrine para persistencia)
+            doctrine_failure_transport:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: 'failure_queue'
+        
+        # Enrutamiento de mensajes a colas
+        routing:
+            # Mensajes de reasignación de envíos
+            'App\Envio\Message\ReasignarEnvioMessage': async
+            'App\Envio\Message\NotificarAsignacionMessage': async
+            
+            # Mensajes de tracking (batch a DB)
+            'App\Tracking\Message\FlushUbicacionesMessage': async
+            
+            # Mensajes de notificaciones
+            'App\Shared\Message\EnviarNotificacionMessage': async
+            
+            # Eventos del workflow
+            'App\Envio\Message\EstadoEnvioChangedMessage': async
+        
+        # Middleware global
+        buses:
+            messenger.bus.default:
+                - middleware.transactional
+                - middleware.doctrine_transaction
+                - middleware.redispatch
+
+when@prod:
+    framework:
+        messenger:
+            transports:
+                async:
+                    retry_strategy:
+                        max_retries: 3
+                        delay: 1000
+                        multiplier: 2
+                        max_delay: 30000

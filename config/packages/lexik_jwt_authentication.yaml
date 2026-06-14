@@ -1,0 +1,25 @@
+lexik_jwt:
+    signature_algorithm: RS256
+    private_key_path: '%env(JWT_SECRET_KEY)%'
+    public_key_path: '%env(JWT_PUBLIC_KEY)%'
+    pass_phrase: '%env(JWT_PASSPHRASE)%'
+    token_ttl: 1h
+    refresh_ttl: 30d
+    
+    # Claims adicionales
+    additional_claims:
+        type: ~
+        uuid: ~
+    
+    # Token extraction
+    token_extractors:
+        authorization_header:
+            enabled: true
+            prefix: Bearer
+            name: Authorization
+        cookie:
+            enabled: false
+            name: BEARER
+        query_parameter:
+            enabled: false
+            name: bearer

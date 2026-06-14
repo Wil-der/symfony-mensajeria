@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mensajeria_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./var/uploads:/var/www/html/var/uploads
+    networks:
+      - mensajeria_net
+    depends_on:
+      - mysql
+      - redis
+
+  nginx:
+    image: nginx:1.26-alpine
+    container_name: mensajeria_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./config/nginx/ssl:/etc/nginx/ssl
+    networks:
+      - mensajeria_net
+    depends_on:
+      - app
+      - mercure
+
+  mysql:
+    image: mysql:8.0
+    container_name: mensajeria_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_change_me
+      MYSQL_DATABASE: mensajeria_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql/performance.cnf:/etc/mysql/conf.d/performance.cnf
+    networks:
+      - mensajeria_net
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: mensajeria_redis
+    restart: unless-stopped
+    command: redis-server --requirepass redis_password
+    volumes:
+      - redis_data:/data
+    networks:
+      - mensajeria_net
+    ports:
+      - "6379:6379"
+
+  mercure:
+    image: dunglas/mercure:v0.16
+    container_name: mensajeria_mercure
+    restart: unless-stopped
+    environment:
+      SERVER_NAME: ':3000'
+      MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+      MERCURE_EXTRA_DIRECTIVES: |
+        anonymous true
+        cors_origins http://localhost https://localhost
+    networks:
+      - mensajeria_net
+    ports:
+      - "3000:3000"
+
+  nominatim:
+    image: mediagis/nominatim:4.4
+    container_name: mensajeria_nominatim
+    restart: unless-stopped
+    environment:
+      NOMINATIM_DATADIR: /nominatim/data
+      NOMINATIM_FLATNODE_FILE: /nominatim/data/flatnodes
+      NOMINATIM_IMPORT_STYLE: full
+      NOMINATIM_USE_US_TIGER: yes
+      NOMINATIM_DATETIME_UPDATE: 0
+      PBF_PATH: /nominatim/data/cuba-latest.osm.pbf
+      IMPORT_STYLE: full
+    volumes:
+      - nominatim_data:/nominatim/data
+      - ./data/osm:/import
+    networks:
+      - mensajeria_net
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  osrm:
+    image: osrm/osrm-backend:v5.27.1
+    container_name: mensajeria_osrm
+    restart: unless-stopped
+    command: osrm-routes --algorithm mld /data/cuba-latest.osrm
+    volumes:
+      - osrm_data:/data
+      - ./data/osm:/import
+    networks:
+      - mensajeria_net
+    ports:
+      - "5000:5000"
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mensajeria_worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./var/uploads:/var/www/html/var/uploads
+    command: php bin/console messenger:consume async doctrine_failure_transport --time-limit=3600 --memory-limit=128M
+    networks:
+      - mensajeria_net
+    depends_on:
+      - mysql
+      - redis
+    deploy:
+      replicas: 2
+
+volumes:
+  mysql_data:
+  redis_data:
+  nominatim_data:
+  osrm_data:
+
+networks:
+  mensajeria_net:
+    driver: bridge

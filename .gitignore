@@ -1,0 +1,67 @@
+```
+# Dependencies
+vendor/
+composer.lock
+
+# Symfony specific
+var/
+!var/cache/.gitkeep
+!var/log/.gitkeep
+!var/sessions/.gitkeep
+
+# Environment
+.env
+.env.local
+.env.*
+!.env.example
+
+# Logs
+*.log
+var/log/
+
+# Cache
+.cache/
+.php_cs.cache
+var/cache/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Compiled files
+*.o
+*.obj
+*.so
+*.a
+*.pyc
+__pycache__/
+
+# Build artifacts
+build/
+dist/
+target/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Docker
+.dockerenv
+!docker-compose.yml
+!Dockerfile
+
+# PHP specific
+*.php~
+.htaccess
+```
