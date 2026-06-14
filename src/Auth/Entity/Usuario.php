@@ -45,6 +45,9 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $deviceToken = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fotoPerfilPath = null;
+
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
@@ -168,6 +171,17 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDeviceToken(?string $deviceToken): self
     {
         $this->deviceToken = $deviceToken;
+        return $this;
+    }
+
+    public function getFotoPerfilPath(): ?string
+    {
+        return $this->fotoPerfilPath;
+    }
+
+    public function setFotoPerfilPath(?string $fotoPerfilPath): self
+    {
+        $this->fotoPerfilPath = $fotoPerfilPath;
         return $this;
     }
 
