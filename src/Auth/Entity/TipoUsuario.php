@@ -8,6 +8,5 @@ enum TipoUsuario: string
 {
     case CLIENTE = 'cliente';
     case MENSAJERO = 'mensajero';
-    case DESTINATARIO = 'destinatario';
     case ADMIN = 'admin';
 }

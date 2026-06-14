@@ -48,8 +48,6 @@ services:
       - ./config/mysql/performance.cnf:/etc/mysql/conf.d/performance.cnf
     networks:
       - mensajeria_net
-    ports:
-      - "3306:3306"
 
   redis:
     image: redis:7.2-alpine
@@ -60,8 +58,6 @@ services:
       - redis_data:/data
     networks:
       - mensajeria_net
-    ports:
-      - "6379:6379"
 
   mercure:
     image: dunglas/mercure:v0.16
@@ -72,7 +68,6 @@ services:
       MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
       MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
       MERCURE_EXTRA_DIRECTIVES: |
-        anonymous true
         cors_origins http://localhost https://localhost
     networks:
       - mensajeria_net
