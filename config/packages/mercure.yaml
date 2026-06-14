@@ -5,4 +5,4 @@ mercure:
             url: '%env(MERCURE_URL)%'
             public_url: '%env(MERCURE_PUBLIC_URL)%'
             # Secret para firmar los JWT de Mercure
-            secret: '!ChangeThisMercureHubJWTSecretKey!'
+            secret: '%env(MERCURE_JWT_SECRET)%'

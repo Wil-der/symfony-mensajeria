@@ -29,7 +29,14 @@ RUN mkdir -p /home/appuser/.composer && \
 # Configurar directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos de la aplicación
+# Copiar archivos de composer primero para aprovechar caché de capas Docker
+COPY composer.json composer.lock* ./
+
+# Instalar dependencias de PHP durante el build (no en runtime)
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts \
+    && rm -rf /root/.composer/cache
+
+# Copiar el resto de archivos de la aplicación
 COPY . /var/www/html
 
 # Configurar permisos
