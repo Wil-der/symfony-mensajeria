@@ -65,14 +65,15 @@ services:
     restart: unless-stopped
     environment:
       SERVER_NAME: ':3000'
-      MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
-      MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
+      MERCURE_PUBLISHER_JWT_KEY: '%env(MERCURE_JWT_SECRET)%'
+      MERCURE_SUBSCRIBER_JWT_KEY: '%env(MERCURE_JWT_SECRET)%'
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins http://localhost https://localhost
     networks:
       - mensajeria_net
-    ports:
-      - "3000:3000"
+    # Puerto solo accesible internamente (Nginx hace proxy)
+    expose:
+      - "3000"
 
   nominatim:
     image: mediagis/nominatim:4.4

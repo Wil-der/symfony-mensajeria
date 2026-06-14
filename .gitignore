@@ -1,48 +1,31 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-*.class
-*.exe
-*.dll
-*.so
-*.a
-*.out
-
 # Dependencies
-node_modules/
-venv/
-.venv/
+vendor/
+
+# Logs
+*.log
+var/log/
+
+# Environment
 .env
 .env.local
-*.env.*
+.env.*
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-*.swo
-
-# Editors
-.vscode/
+# IDE
 .idea/
+.vscode/
 
-# System files
+# OS
 .DS_Store
 Thumbs.db
 
-# Coverage
-coverage/
-htmlcov/
-.coverage
+# Tests
+.phpunit.result.cache
 
-# Build directories
-dist/
-build/
-target/
-.mypy_cache/
-.pytest_cache/
-.gradle/
+# Symfony specific
+var/cache/
+var/logs/
+var/sessions/
+public/build/
+assets/
 ```

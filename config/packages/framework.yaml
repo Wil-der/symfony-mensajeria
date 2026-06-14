@@ -33,7 +33,7 @@ framework:
         envio:
             type: 'state_machine'
             marking_store:
-                method: 'getEstado'
+                type: 'method'
                 property: 'estado'
             supports:
                 - App\Envio\Entity\Envio

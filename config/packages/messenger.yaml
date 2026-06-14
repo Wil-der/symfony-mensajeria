@@ -4,10 +4,11 @@ framework:
         transports:
             # Cola asíncrona principal (Redis)
             async:
-                dsn: '%env(REDIS_URL)%'
+                dsn: '%env(REDIS_URL)%/mensajeria_async'
                 options:
-                    queue: 'mensajeria_async'
-                    auto_setup: false
+                    stream: 'mensajeria_async'
+                    group: 'symfony_group'
+                    consumer: 'symfony_consumer'
             
             # Cola de fallos (Doctrine para persistencia)
             doctrine_failure_transport:

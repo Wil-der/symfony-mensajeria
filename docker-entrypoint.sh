@@ -15,15 +15,10 @@ while ! nc -z redis 6379; do
 done
 echo "Redis está disponible"
 
-# Instalar dependencias de Composer si es necesario
-if [ ! -d "/var/www/html/vendor" ]; then
-    echo "Instalando dependencias de Composer..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader
+# Limpiar caché y calentar (solo si no existe)
+if [ ! -f "/var/www/html/var/cache/prod/.warmup" ]; then
+    php bin/console cache:warmup --no-optional-warmers
 fi
-
-# Limpiar caché y calentar
-php bin/console cache:clear --no-warmup
-php bin/console cache:warmup
 
 # Ejecutar migraciones (opcional, descomentar en producción)
 # php bin/console doctrine:migrations:migrate --no-interaction
