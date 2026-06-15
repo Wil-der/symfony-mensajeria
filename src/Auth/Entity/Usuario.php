@@ -108,12 +108,12 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPasswordHash(): string
+    public function getPassword(): string
     {
         return $this->passwordHash;
     }
 
-    public function setPasswordHash(string $passwordHash): self
+    public function setPassword(string $passwordHash): self
     {
         $this->passwordHash = $passwordHash;
         return $this;

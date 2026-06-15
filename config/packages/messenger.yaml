@@ -34,9 +34,10 @@ framework:
         # Middleware global
         buses:
             messenger.bus.default:
-                - middleware.transactional
-                - middleware.doctrine_transaction
-                - middleware.redispatch
+                middleware:
+                    - middleware.transactional
+                    - middleware.doctrine_transaction
+                    - middleware.redispatch
 
 when@prod:
     framework:
