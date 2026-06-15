@@ -431,6 +431,25 @@ class Envio
         return $this;
     }
 
+    // Métodos adaptadores para el Workflow (trabaja con strings)
+    public function getMarking(): string
+    {
+        return $this->estado->value;
+    }
+
+    public function setMarking(string $estado): void
+    {
+        $this->estado = EstadoEnvio::from($estado);
+        // Actualizar timestamps según el estado
+        match ($this->estado) {
+            EstadoEnvio::ASIGNADO => $this->asignadoAt = new \DateTimeImmutable(),
+            EstadoEnvio::RECOGIDO => $this->recogidoAt = new \DateTimeImmutable(),
+            EstadoEnvio::ENTREGADO => $this->entregadoAt = new \DateTimeImmutable(),
+            EstadoEnvio::CANCELADO => $this->canceladoAt = new \DateTimeImmutable(),
+            default => null,
+        };
+    }
+
     public function getMotivoCancelacion(): ?string
     {
         return $this->motivoCancelacion;

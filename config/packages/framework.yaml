@@ -34,7 +34,7 @@ framework:
             type: 'state_machine'
             marking_store:
                 type: 'method'
-                property: 'estado'
+                property: 'marking'
             supports:
                 - App\Envio\Entity\Envio
             initial_marking: pendiente

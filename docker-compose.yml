@@ -65,8 +65,8 @@ services:
     restart: unless-stopped
     environment:
       SERVER_NAME: ':3000'
-      MERCURE_PUBLISHER_JWT_KEY: '%env(MERCURE_JWT_SECRET)%'
-      MERCURE_SUBSCRIBER_JWT_KEY: '%env(MERCURE_JWT_SECRET)%'
+      MERCURE_PUBLISHER_JWT_KEY: ${MERCURE_JWT_SECRET}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${MERCURE_JWT_SECRET}
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins http://localhost https://localhost
     networks:
@@ -92,8 +92,8 @@ services:
       - ./data/osm:/import
     networks:
       - mensajeria_net
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       - mysql
 
@@ -107,8 +107,8 @@ services:
       - ./data/osm:/import
     networks:
       - mensajeria_net
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
 
   worker:
     build:
