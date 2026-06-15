@@ -91,6 +91,10 @@ class MensajeroRepository extends ServiceEntityRepository
     /**
      * Busca mensajeros cercanos usando fórmula Haversine en SQL nativo
      * Calcula la distancia real en kilómetros basada en lat/lng
+     * 
+     * LIMITACIÓN CONOCIDA: Esta consulta lee desde MySQL (ubicaciones_mensajero),
+     * que recibe datos en batch cada 60s. Los resultados pueden tener hasta 60s
+     * de desfase en la búsqueda inicial. Mejora futura: leer desde Redis en tiempo real.
      */
     public function findCercanos(float $lat, float $lng, float $radioKm, int $limit = 20): array
     {
