@@ -35,9 +35,8 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
-                    - middleware.transactional
-                    - middleware.doctrine_transaction
-                    - middleware.redispatch
+                    - doctrine_transaction
+                    # - redispatch  <-- Descomenta esta línea SOLO si creaste este servicio personalizado en services.yaml
 
 when@prod:
     framework:

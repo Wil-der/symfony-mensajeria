@@ -19,14 +19,16 @@ framework:
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native
 
-    # Rate limiting
+    # Rate limiting (CORREGIDO: se añade 'int:' para forzar número entero)
     rate_limiter:
         login:
             policy: 'fixed_window'
-            limit: '%env(RATE_LIMIT_LOGIN)%'
+            limit: '%env(int:RATE_LIMIT_LOGIN)%'
+            interval: '15 minutes' # Asegúrate de tener un intervalo definido
         ubicacion:
             policy: 'fixed_window'
-            limit: '%env(RATE_LIMIT_UBICACION)%'
+            limit: '%env(int:RATE_LIMIT_UBICACION)%'
+            interval: '1 minute' # Asegúrate de tener un intervalo definido
 
     # Workflow para estados de envío
     workflows:
