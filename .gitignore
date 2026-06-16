@@ -1,27 +1,48 @@
-```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-
+```yaml
 # Dependencies
+node_modules/
 vendor/
 composer.lock
-
-# Logs and temp files
-*.log
-*.tmp
-*.swp
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
+!.env.example
 
-# Editors
-.vscode/
-.idea/
+# Logs
+*.log
+logs/
+var/log/
+
+# Cache
+.cache/
+.php_cs.cache
+.sass-cache/
 
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build and distribution
+dist/
+build/
+public/build/
+var/cache/
+var/bootstrap.php.cache
+var/cache/*
+!var/cache/.gitkeep
+
+# Tests
+.phpunit.result.cache
+
+# Symfony specific
+config/secrets/prod/
+config/jwt/
 ```
