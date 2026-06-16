@@ -1,15 +1,12 @@
 lexik_jwt_authentication:
     access_token_verification:
-        signature_algorithm: RS256
+        signature:
+            enabled: true
+            algorithm: RS256
     private_key_path: '%env(JWT_SECRET_KEY)%'
     public_key_path: '%env(JWT_PUBLIC_KEY)%'
     pass_phrase: '%env(JWT_PASSPHRASE)%'
     token_ttl: 1h
-    
-    # Claims adicionales
-    additional_claims:
-        type: ~
-        uuid: ~
     
     # Token extraction
     token_extractors:
